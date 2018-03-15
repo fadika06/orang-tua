@@ -10,14 +10,6 @@
 [![Monthly Downloads](https://poser.pugx.org/bantenprov/orang-tua/d/monthly)](https://packagist.org/packages/bantenprov/orang-tua)
 [![Daily Downloads](https://poser.pugx.org/bantenprov/orang-tua/d/daily)](https://packagist.org/packages/bantenprov/orang-tua)
 
-Orang Tua pada sekolah
-
-- Teknik Elektronika Industri
-- Teknik Instalasi Tenaga Listrik
-- Teknik Pendingin dan Tata Udara
-- Teknik Komputer dan Jaringan
-- Multi Media
-
 ### Install via composer
 
 - Development snapshot
