@@ -25,10 +25,6 @@ class CreateOrangTuasTable extends Migration
 			 $table->text('kerja_ibu');
 			 $table->text('pendidikan_ibu');
 			 $table->integer('no_telp')->unique();
-			 //$table->integer('prov_id')->unsigned()->index();
-			 //$table->integer('kabkota_id')->index();
-			 //$table->integer('kecamatan_id')->index();
-			 //$table->integer('kelurahan_id')->index();
 			 $table->integer('user_id')->unique();
 			 $table->timestamps();
 			 $table->softDeletes();
