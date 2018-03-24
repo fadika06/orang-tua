@@ -49,17 +49,17 @@ class BantenprovOrangTuaSeederOrangTua extends Seeder
         foreach ($orang_tuas as $orang_tua) {
             $model = OrangTua::create(
                 [
-                    'nomor_un' => $orang_tua['nomor_un'],
-                    'no_kk' => $orang_tua['no_kk'],
-                    'alamat_ortu' => $orang_tua['alamat_ortu'],
-                    'nama_ayah' => $orang_tua['nama_ayah'],
-                    'nama_ibu' => $orang_tua['nama_ibu'],
-                    'kerja_ayah' => $orang_tua['kerja_ayah'],
-                    'pendidikan_ayah' => $orang_tua['pendidikan_ayah'],
-                    'kerja_ibu' => $orang_tua['kerja_ibu'],
-                    'pendidikan_ibu' => $orang_tua['pendidikan_ibu'],
-                    'no_telp' => $orang_tua['no_telp'],
-                    'user_id' => $orang_tua['user_id'],
+                    'nomor_un' => $orang_tua->nomor_un,
+                    'no_kk' => $orang_tua->no_kk,
+                    'alamat_ortu' => $orang_tua->alamat_ortu,
+                    'nama_ayah' => $orang_tua->nama_ayah,
+                    'nama_ibu' => $orang_tua->nama_ibu,
+                    'kerja_ayah' => $orang_tua->kerja_ayah,
+                    'pendidikan_ayah' => $orang_tua->pendidikan_ayah,
+                    'kerja_ibu' => $orang_tua->kerja_ibu,
+                    'pendidikan_ibu' => $orang_tua->pendidikan_ibu,
+                    'no_telp' => $orang_tua->no_telp,
+                    'user_id' => $orang_tua->user_id,
                 ]
             );
             $model->save();
