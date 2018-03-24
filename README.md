@@ -222,3 +222,4 @@ Vue.component('orang-tua-pie-02', OrangTuaPie02);
 import OrangTuaPie03 from './components/views/bantenprov/orang-tua/OrangTuaPie03.vue';
 Vue.component('orang-tua-pie-03', OrangTuaPie03);
 ```
+
