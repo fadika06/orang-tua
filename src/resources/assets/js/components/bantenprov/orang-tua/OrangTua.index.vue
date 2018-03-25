@@ -98,12 +98,6 @@ export default {
           titleClass: 'center aligned'
         },
         {
-          name: 'user.name',
-          title: 'Username',
-          sortField: 'user_id',
-          titleClass: 'center aligned'
-        },
-        {
           name: 'nama_ayah',
           title: 'Nama Ayah',
           sortField: 'nama_ayah',
@@ -113,6 +107,12 @@ export default {
           name: 'nama_ibu',
           title: 'Nama Ibu',
           sortField: 'nama_ibu',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'user.name',
+          title: 'Username',
+          sortField: 'user_id',
           titleClass: 'center aligned'
         },
         {
