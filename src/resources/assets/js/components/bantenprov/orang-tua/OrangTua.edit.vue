@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> {{ title }}
+      <i class="fa fa-table" aria-hidden="true"></i> Edit Orang Tua
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-body">
-      <vue-form :state="state" @submit.prevent="onSubmit">
+      <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
 
          <div class="form-row mt-4">
           <div class="col-md">
@@ -23,7 +23,7 @@
 
             <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">username is a required field</small>
+              <small class="form-text text-danger" slot="required">Username is a required field</small>
             </field-messages>
             </validate>
           </div>
@@ -139,10 +139,11 @@
           </div>
         </validate>
 
-        <div class="form-group">
+        <div class="form-row mt-4">
+          <div class="col-md">
           <button type="submit" class="btn btn-primary">Submit</button>
           <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
-        </div>
+        </div></div>
 
       </vue-form>
     </div>
@@ -151,31 +152,11 @@
 
 <script>
 export default {
-  data() {
-    return {
-      state: {},
-      title: 'Edit Orang Tua',
-      model: {
-        user_         : "",
-        nomor_un      : "",
-        no_kk         : "",
-        no_telp       : "",
-        nama_ayah     : "",
-        nama_ibu      : "",
-        pendidikan_ayah : "",
-        kerja_ayah    : "",
-        pendidikan_ibu  : "",
-        kerja_ibu     : "",
-        alamat_ortu   : ""
-      },
-      user: []
-    }
-  },
   mounted() {
     axios.get('api/orang-tua/' + this.$route.params.id + '/edit')
       .then(response => {
         if (response.data.loaded == true) {
-          this.model.user = response.data.orang_tua.user;
+          this.model.user = response.data.user;
           this.model.nomor_un  = response.data.orang_tua.nomor_un;
           this.model.no_kk  = response.data.orang_tua.no_kk;
           this.model.no_telp  = response.data.orang_tua.no_telp;
@@ -192,7 +173,7 @@ export default {
       })
       .catch(function(response) {
         alert('Break');
-        window.location.href = '#/admin/orang-tua';
+        window.location.href = '#/admin/orang-tua/';
       }),
       axios.get('api/orang-tua/create')
       .then(response => {           
@@ -203,6 +184,25 @@ export default {
       .catch(function(response) {
         alert('Break');
       })
+  },
+  data() {
+    return {
+      state: {},
+      model: {
+        user          : "",
+        nomor_un      : "",
+        no_kk         : "",
+        no_telp       : "",
+        nama_ayah     : "",
+        nama_ibu      : "",
+        pendidikan_ayah : "",
+        kerja_ayah    : "",
+        pendidikan_ibu  : "",
+        kerja_ibu     : "",
+        alamat_ortu   : ""
+      },
+      user: []
+    }
   },
   methods: {
     onSubmit: function() {
@@ -226,18 +226,18 @@ export default {
           })
           .then(response => {
             if (response.data.loaded == true) {
-              if(response.data.error == false){
+              if(response.data.message == 'success'){
                 alert(response.data.message);
                 app.back();
               }else{
                 alert(response.data.message);
               }
             } else {
-              alert('Failed');
+              alert(response.data.message);
             }
           })
           .catch(function(response) {
-            alert('Break');
+            alert('Break ' + response.data.message);
           });
       }
     },
@@ -245,7 +245,6 @@ export default {
       axios.get('api/orang-tua/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.loaded == true) {
-            this.model.user_id  = response.data.orang_tua.user_id;
           this.model.nomor_un  = response.data.orang_tua.nomor_un;
           this.model.no_kk  = response.data.orang_tua.no_kk;
           this.model.no_telp  = response.data.orang_tua.no_telp;
@@ -262,11 +261,10 @@ export default {
         })
         .catch(function(response) {
           alert('Break');
-          window.location.href = '#/admin/orang-tua';
         });
     },
     back() {
-      window.location = '#/admin/orang-tua';
+      window.location = '#/admin/orang-tua/';
     }
   }
 }

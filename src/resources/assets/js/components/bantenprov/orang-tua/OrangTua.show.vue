@@ -17,13 +17,6 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Username :</b> {{ model.user }}
-          </div>
-        </div>
-
-
-        <div class="form-row mt-4">
-          <div class="col-md">
             <b>Nomor UN :</b> {{ model.nomor_un }}
           </div>
         </div>
@@ -84,6 +77,17 @@
 
       </vue-form>
     </div>
+       <div class="card-footer text-muted">
+        <div class="row">
+          <div class="col-md">
+            <b>Username :</b> {{ model.user }}
+          </div>
+          <div class="col-md">
+            <div class="col-md text-right">Dibuat : {{ model.created_at }}</div>
+            <div class="col-md text-right">Diperbaiki : {{ model.updated_at }}</div>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -104,6 +108,8 @@ export default {
           this.model.pendidikan_ibu = response.data.orang_tua.pendidikan_ibu;
           this.model.kerja_ibu = response.data.orang_tua.kerja_ibu;
           this.model.alamat_ortu = response.data.orang_tua.alamat_ortu;
+          this.model.created_at = response.data.orang_tua.created_at;
+          this.model.updated_at = response.data.orang_tua.updated_at;
         } else {
           alert('Failed');
         }
@@ -128,7 +134,9 @@ export default {
         kerja_ayah: "",
         pendidikan_ibu: "",
         kerja_ibu: "",
-        alamat_ortu: ""
+        alamat_ortu: "",
+        created_at: "",
+        updated_at: ""
         
       },
       user: []
@@ -151,7 +159,9 @@ export default {
           kerja_ayah: this.model.kerja_ayah,
           pendidikan_ibu: this.model.pendidikan_ibu ,
           kerja_ibu: this.model.kerja_ibu,
-          alamat_ortu: this.model.alamat_ortu
+          alamat_ortu: this.model.alamat_ortu,
+          created_at: this.model.created_at,
+          updated_at: this.model.updated_at
              
             
           })

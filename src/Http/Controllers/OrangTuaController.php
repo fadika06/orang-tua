@@ -61,11 +61,7 @@ class OrangTuaController extends Controller
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->paginate($perPage);
-
-        foreach($response as $user){
-            array_set($response->data, 'user', $user->user->name);
-        }
+        $response = $query->with('user')->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -102,24 +98,24 @@ class OrangTuaController extends Controller
         $orang_tua = $this->orang_tua;
 
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'nomor_un'   => 'required|max:255',
-            'no_kk'   => 'required|max:255',
-            'no_telp'   => 'required|max:255',
-            'nama_ayah'   => 'required|max:255',
-            'nama_ibu'   => 'required|max:255',
-            'pendidikan_ayah'   => 'required|max:255',
-            'kerja_ayah'   => 'required|max:255',
-            'pendidikan_ibu'   => 'required|max:255',
-            'kerja_ibu'   => 'required|max:255',
-            'alamat_ortu'   => 'required|max:255',
+            'user_id' => 'required|unique:orangtuas,user_id',
+            'nomor_un'   => 'required|unique:orangtuas,nomor_un',
+            'no_kk'   => 'required|unique:orangtuas,no_kk',
+            'no_telp'   => 'required|unique:orangtuas,no_telp',
+            'nama_ayah'   => 'required',
+            'nama_ibu'   => 'required',
+            'pendidikan_ayah'   => 'required',
+            'kerja_ayah'   => 'required',
+            'pendidikan_ibu'   => 'required',
+            'kerja_ibu'   => 'required',
+            'alamat_ortu'   => 'required',
         ]);
 
         if($validator->fails()){
-            $check = $orang_tua->where('label',$request->label)->whereNull('deleted_at')->count();
+            $check = $orang_tua->where('user_id',$request->user_id)->orWhere('nomor_un',$request->nomor_un)->orWhere('no_kk',$request->no_kk)->orWhere('no_telp',$request->no_telp)->whereNull('deleted_at')->count();
 
             if ($check > 0) {
-                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
+                $response['message'] = 'Failed ! Username, Nomor UN, Nomor KK, Nomor Telp already exists';
             } else {
             $orang_tua->user_id = $request->input('user_id');
             $orang_tua->nomor_un = $request->input('nomor_un');
@@ -185,6 +181,9 @@ class OrangTuaController extends Controller
     {
         $orang_tua = $this->orang_tua->findOrFail($id);
 
+        array_set($orang_tua->user, 'label', $orang_tua->user->name);
+        
+        $response['user'] = $orang_tua->user;
         $response['orang_tua'] = $orang_tua;
         $response['loaded'] = true;
 
@@ -199,41 +198,72 @@ class OrangTuaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $response = array();
+        $message  = array();
         $orang_tua = $this->orang_tua->findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'nomor_un'   => 'required|max:255',
-            'no_kk'   => 'required|max:255',
-            'no_telp'   => 'required|max:255',
-            'nama_ayah'   => 'required|max:255',
-            'nama_ibu'   => 'required|max:255',
-            'pendidikan_ayah'   => 'required|max:255',
-            'kerja_ayah'   => 'required|max:255',
-            'pendidikan_ibu'   => 'required|max:255',
-            'kerja_ibu'   => 'required|max:255',
-            'alamat_ortu'   => 'required|max:255',
+            'user_id' => 'required|unique:orangtuas,user_id,'.$id,
+            'nomor_un'   => 'required |unique:orangtuas,nomor_un,'.$id,
+            'no_kk'   => 'required|unique:orangtuas,no_kk,'.$id,
+            'no_telp'   => 'required|unique:orangtuas,no_telp,'.$id,
+            'nama_ayah'   => 'required',
+            'nama_ibu'   => 'required',
+            'pendidikan_ayah'   => 'required',
+            'kerja_ayah'   => 'required',
+            'pendidikan_ibu'   => 'required',
+            'kerja_ibu'   => 'required',
+            'alamat_ortu'   => 'required',
         ]);
 
-        if($validator->fails()){
-            $response['error']  = true;
-            $response['message'] = $validator->errors()->first();
+        if ($validator->fails()) {
+
+            foreach($validator->messages()->getMessages() as $key => $error){
+                        foreach($error AS $error_get) {
+                            array_push($message, $error_get);
+                        }                
+                    } 
+
+             $check_user     = $this->orang_tua->where('id','!=', $id)->where('user_id', $request->user_id);
+             $check_nomor_un = $this->orang_tua->where('id','!=', $id)->where('nomor_un', $request->nomor_un);
+             $check_no_kk = $this->orang_tua->where('id','!=', $id)->where('no_kk', $request->no_kk);
+             $check_no_telp = $this->orang_tua->where('id','!=', $id)->where('no_telp', $request->no_telp);
+
+             if($check_user->count() > 0 || $check_nomor_un->count() > 0 || $check_no_kk->count() > 0 || $check_no_telp->count() > 0){
+                  $response['message'] = implode("\n",$message);
         } else {
-            $orang_tua->user_id    = $request->user_id;
-            $orang_tua->nomor_un = $request->nomor_un;
-            $orang_tua->no_kk = $request->no_kk;
-            $orang_tua->no_telp = $request->no_telp;
-            $orang_tua->nama_ayah = $request->nama_ayah;
-            $orang_tua->nama_ibu = $request->nama_ibu;
-            $orang_tua->pendidikan_ayah = $request->pendidikan_ayah;
-            $orang_tua->kerja_ayah = $request->kerja_ayah;
-            $orang_tua->pendidikan_ibu = $request->pendidikan_ibu;
-            $orang_tua->kerja_ibu = $request->kerja_ibu;
-            $orang_tua->alamat_ortu = $request->alamat_ortu;
+            $orang_tua->user_id    = $request->input('user_id');
+            $orang_tua->nomor_un = $request->input('nomor_un');
+            $orang_tua->no_kk = $request->input('no_kk');
+            $orang_tua->no_telp = $request->input('no_telp');
+            $orang_tua->nama_ayah = $request->input('nama_ayah');
+            $orang_tua->nama_ibu = $request->input('nama_ibu');
+            $orang_tua->pendidikan_ayah = $request->input('pendidikan_ayah');
+            $orang_tua->kerja_ayah = $request->input('kerja_ayah');
+            $orang_tua->pendidikan_ibu = $request->input('pendidikan_ibu');
+            $orang_tua->kerja_ibu = $request->input('kerja_ibu');
+            $orang_tua->alamat_ortu = $request->input('alamat_ortu');
             $orang_tua->save();
 
-            $response['error'] = false;
-            $response['message'] = 'Success';
+            $response['message'] = 'success';
+
+          }
+        } else {
+            $orang_tua->user_id    = $request->input('user_id');
+            $orang_tua->nomor_un = $request->input('nomor_un');
+            $orang_tua->no_kk = $request->input('no_kk');
+            $orang_tua->no_telp = $request->input('no_telp');
+            $orang_tua->nama_ayah = $request->input('nama_ayah');
+            $orang_tua->nama_ibu = $request->input('nama_ibu');
+            $orang_tua->pendidikan_ayah = $request->input('pendidikan_ayah');
+            $orang_tua->kerja_ayah = $request->input('kerja_ayah');
+            $orang_tua->pendidikan_ibu = $request->input('pendidikan_ibu');
+            $orang_tua->kerja_ibu = $request->input('kerja_ibu');
+            $orang_tua->alamat_ortu = $request->input('alamat_ortu');
+            $orang_tua->save();
+
+            $response['message'] = 'success';
         }
 
         $response['loaded'] = true;
