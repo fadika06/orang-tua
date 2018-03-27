@@ -24,7 +24,7 @@ class CreateOrangTuasTable extends Migration
 			 $table->text('pendidikan_ayah');
 			 $table->text('kerja_ibu');
 			 $table->text('pendidikan_ibu');
-			 $table->bigInteger('no_telp');
+			 $table->bigInteger('no_telp')->unique();
 			 $table->Integer('user_id')->unique();
 			 $table->timestamps();
 			 $table->softDeletes();
