@@ -75,14 +75,29 @@ class OrangTuaController extends Controller
      */
     public function create()
     {
-        $users = $this->user->all();
+        $response = [];
+        $users_special = $this->user->all();
+        $users_standar = $this->user->find(\Auth::User()->id);
+        $current_user = \Auth::User();
 
-        foreach($users as $user){
-            array_set($user, 'label', $user->name);
+        $role_check = \Auth::User()->hasRole(['superadministrator','administrator']);
+
+        if($role_check){
+            $response['user_special'] = true;
+            foreach($users_special as $user){
+                array_set($user, 'label', $user->name);
+            }
+            $response['user'] = $users_special;
+        }else{
+            $response['user_special'] = false;
+            array_set($users_standar, 'label', $users_standar->name);
+            $response['user'] = $users_standar;
         }
 
-        $response['user'] = $users;
-        $response['loaded'] = true;
+        array_set($current_user, 'label', $current_user->name);
+
+        $response['current_user'] = $current_user;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -149,7 +164,7 @@ class OrangTuaController extends Controller
             $response['message'] = 'success';
         }
 
-        $response['loaded'] = true;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -163,10 +178,10 @@ class OrangTuaController extends Controller
     public function show($id)
     {
         $orang_tua = $this->orang_tua->findOrFail($id);
-        
+
         $response['user'] = $orang_tua->user;
         $response['orang_tua'] = $orang_tua;
-        $response['loaded'] = true;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -182,10 +197,10 @@ class OrangTuaController extends Controller
         $orang_tua = $this->orang_tua->findOrFail($id);
 
         array_set($orang_tua->user, 'label', $orang_tua->user->name);
-        
+
         $response['user'] = $orang_tua->user;
         $response['orang_tua'] = $orang_tua;
-        $response['loaded'] = true;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -198,7 +213,7 @@ class OrangTuaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         $response = array();
         $message  = array();
         $orang_tua = $this->orang_tua->findOrFail($id);
@@ -222,8 +237,8 @@ class OrangTuaController extends Controller
             foreach($validator->messages()->getMessages() as $key => $error){
                         foreach($error AS $error_get) {
                             array_push($message, $error_get);
-                        }                
-                    } 
+                        }
+                    }
 
              $check_user     = $this->orang_tua->where('id','!=', $id)->where('user_id', $request->user_id);
              $check_nomor_un = $this->orang_tua->where('id','!=', $id)->where('nomor_un', $request->nomor_un);
@@ -266,7 +281,7 @@ class OrangTuaController extends Controller
             $response['message'] = 'success';
         }
 
-        $response['loaded'] = true;
+        $response['status'] = true;
 
         return response()->json($response);
     }
