@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> Show Data Orang Tua 
+      <i class="fa fa-table" aria-hidden="true"></i> Show Data Orang Tua
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -96,7 +96,7 @@ export default {
   mounted() {
     axios.get('api/orang-tua/' + this.$route.params.id)
       .then(response => {
-        if (response.data.loaded == true) {
+        if (response.data.status == true) {
           this.model.user = response.data.orang_tua.user.name;
           this.model.nomor_un = response.data.orang_tua.nomor_un;
           this.model.no_kk = response.data.orang_tua.no_kk;
@@ -125,8 +125,8 @@ export default {
       state: {},
       model: {
         user: "",
-        nomor_un: "",    
-        no_kk: "", 
+        nomor_un: "",
+        no_kk: "",
         no_telp: "",
         nama_ayah: "",
         nama_ibu: "",
@@ -137,7 +137,7 @@ export default {
         alamat_ortu: "",
         created_at: "",
         updated_at: ""
-        
+
       },
       user: []
     }
@@ -162,11 +162,11 @@ export default {
           alamat_ortu: this.model.alamat_ortu,
           created_at: this.model.created_at,
           updated_at: this.model.updated_at
-             
-            
+
+
           })
           .then(response => {
-            if (response.data.loaded == true) {
+            if (response.data.status == true) {
               if(response.data.message == 'success'){
                 alert(response.data.message);
                 app.back();

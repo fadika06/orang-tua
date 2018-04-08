@@ -154,12 +154,19 @@ export default {
    mounted(){
     axios.get('api/orang-tua/create')
     .then(response => {
+      this.model.user = response.data.current_user;
+
+      if(response.data.user_special == true){
         response.data.user.forEach(user_element => {
-            this.user.push(user_element);
+          this.user.push(user_element);
         });
+      }else{
+        this.user.push(response.data.user);
+      }
     })
     .catch(function(response) {
       alert('Break');
+      window.location = '#/admin/orang-tua';
     });
   },
   data() {
@@ -203,7 +210,7 @@ export default {
             alamat_ortu : this.model.alamat_ortu
           })
           .then(response => {
-            if (response.data.loaded == true) {
+            if (response.data.status == true) {
               if(response.data.message == 'success'){
                 alert(response.data.message);
                 app.back();
@@ -222,7 +229,7 @@ export default {
     reset() {
       axios.get('api/orang-tua/create')
         .then(response => {
-          if (response.data.loaded == true) {
+          if (response.data.status == true) {
             this.model.user_id  = response.data.orang_tua.user_id;
             this.model.nomor_un  = response.data.orang_tua.nomor_un;
             this.model.no_kk  = response.data.orang_tua.no_kk;
