@@ -215,6 +215,7 @@ export default {
       } else {
         axios.put('api/orang-tua/' + this.$route.params.id, {
             user_id : this.model.user.id,
+            nomor_un: this.model.siswa.nomor_un,
             siswa_id: this.model.siswa.id,
             no_telp : this.model.no_telp,
             nama_ayah : this.model.nama_ayah,

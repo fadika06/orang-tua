@@ -58,13 +58,13 @@ class OrangTuaController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                $value = "%{$request->filter}%";
-                $q->where('siswa_id', 'like', $value)
+                $q->where('id', 'like', $value)
                   ->orWhere('nama_ayah', 'like', $value);
             });
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->with('user')->paginate($perPage);
+        $response = $query->with('user')->with('siswa')->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -123,7 +123,7 @@ class OrangTuaController extends Controller
 
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|unique:orangtuas,user_id',
-            'siswa_id' => 'required|unique:orangtuas,siswa_id',
+            'nomor_un' => 'required|unique:orangtuas,nomor_un',
             'no_telp'   => 'required|unique:orangtuas,no_telp',
             'nama_ayah'   => 'required',
             'nama_ibu'   => 'required',
@@ -135,13 +135,13 @@ class OrangTuaController extends Controller
         ]);
 
         if($validator->fails()){
-            $check = $orang_tua->where('user_id',$request->user_id)->orWhere('siswa_id',$request->siswa_id)->orWhere('no_telp',$request->no_telp)->whereNull('deleted_at')->count();
+            $check = $orang_tua->where('user_id',$request->user_id)->orWhere('nomor_un',$request->nomor_un)->orWhere('no_telp',$request->no_telp)->whereNull('deleted_at')->count();
 
             if ($check > 0) {
                 $response['message'] = 'Failed ! Username, Nama Siswa, Nomor Telp already exists';
             } else {
             $orang_tua->user_id = $request->input('user_id');
-            $orang_tua->siswa_id = $request->input('siswa_id');
+            $orang_tua->nomor_un = $request->input('nomor_un');
             $orang_tua->no_telp = $request->input('no_telp');
             $orang_tua->nama_ayah = $request->input('nama_ayah');
             $orang_tua->nama_ibu = $request->input('nama_ibu');
@@ -157,7 +157,7 @@ class OrangTuaController extends Controller
 
             } else {
             $orang_tua->user_id = $request->input('user_id');
-            $orang_tua->siswa_id = $request->input('siswa_id');
+            $orang_tua->nomor_un = $request->input('nomor_un');
             $orang_tua->no_telp = $request->input('no_telp');
             $orang_tua->nama_ayah = $request->input('nama_ayah');
             $orang_tua->nama_ibu = $request->input('nama_ibu');
@@ -168,7 +168,6 @@ class OrangTuaController extends Controller
             $orang_tua->alamat_ortu = $request->input('alamat_ortu');
             $orang_tua->save();
             $response['message'] = 'success';
-        }
 
         $response['status'] = true;
 
@@ -229,7 +228,7 @@ class OrangTuaController extends Controller
 
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|unique:orangtuas,user_id,'.$id,
-            'siswa_id' => 'required|unique:orangtuas,siswa_id,'.$id,
+            'nomor_un' => 'required|unique:orangtuas,nomor_un,'.$id,
             'no_telp'   => 'required|unique:orangtuas,no_telp,'.$id,
             'nama_ayah'   => 'required',
             'nama_ibu'   => 'required',
@@ -249,14 +248,14 @@ class OrangTuaController extends Controller
                     }
 
              $check_user     = $this->orang_tua->where('id','!=', $id)->where('user_id', $request->user_id);
-             $check_siswa = $this->orang_tua->where('id','!=', $id)->where('siswa_id', $request->siswa_id);
+             $check_siswa = $this->orang_tua->where('id','!=', $id)->where('nomor_un', $request->nomor_un);
              $check_no_telp = $this->orang_tua->where('id','!=', $id)->where('no_telp', $request->no_telp);
 
              if($check_user->count() > 0 || $check_siswa->count() > 0 || $check_no_telp->count() > 0){
                   $response['message'] = implode("\n",$message);
         } else {
             $orang_tua->user_id    = $request->input('user_id');
-            $orang_tua->siswa_id = $request->input('siswa_id');
+            $orang_tua->nomor_un = $request->input('nomor_un');
             $orang_tua->no_telp = $request->input('no_telp');
             $orang_tua->nama_ayah = $request->input('nama_ayah');
             $orang_tua->nama_ibu = $request->input('nama_ibu');
@@ -272,7 +271,7 @@ class OrangTuaController extends Controller
           }
         } else {
             $orang_tua->user_id    = $request->input('user_id');
-            $orang_tua->siswa_id = $request->input('siswa_id');
+            $orang_tua->nomor_un = $request->input('nomor_un');
             $orang_tua->no_telp = $request->input('no_telp');
             $orang_tua->nama_ayah = $request->input('nama_ayah');
             $orang_tua->nama_ibu = $request->input('nama_ibu');

@@ -195,6 +195,7 @@ export default {
         axios.post('api/orang-tua', {
             user_id : this.model.user.id,
             siswa_id : this.model.siswa.id,
+            nomor_un: this.model.siswa.nomor_un,
             no_telp : this.model.no_telp,
             nama_ayah : this.model.nama_ayah,
             nama_ibu : this.model.nama_ibu,

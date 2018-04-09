@@ -18,7 +18,7 @@ class OrangTua extends Model
     protected $table = 'orangtuas';
     
     protected $fillable = [
-        'siswa_id',
+        'nomor_un',
         'alamat_ortu',
         'nama_ayah',
         'nama_ibu',
@@ -38,6 +38,6 @@ class OrangTua extends Model
 
     public function siswa()
     {
-        return $this->belongsTo('Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa','siswa_id');
+        return $this->belongsTo('Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa','nomor_un','nomor_un');
     }
 }
