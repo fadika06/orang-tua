@@ -15,7 +15,7 @@ class CreateOrangTuasTable extends Migration
 	{
 		Schema::create('orangtuas', function (Blueprint $table) {
 			 $table->increments('id');
-			 $table->integer('siswa_id');
+			 $table->integer('nomor_un');
 			 $table->text('alamat_ortu');
 			 $table->string('nama_ayah');
 			 $table->string('nama_ibu');
