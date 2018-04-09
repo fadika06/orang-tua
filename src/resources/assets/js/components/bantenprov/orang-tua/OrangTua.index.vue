@@ -92,9 +92,15 @@ export default {
           dataClass: 'right aligned'
         },
         {
-          name: 'no_kk',
-          title: 'Nomor KK',
-          sortField: 'no_kk',
+          name: 'siswa.nama_siswa',
+          title: 'Nama Siswa',
+          sortField: 'Siswa_id',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'alamat_ortu',
+          title: 'Alamat Orang Tua',
+          sortField: 'alamat_ortu',
           titleClass: 'center aligned'
         },
         {

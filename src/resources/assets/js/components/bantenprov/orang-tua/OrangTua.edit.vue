@@ -15,35 +15,27 @@
     <div class="card-body">
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
 
-        <validate tag="div">
-          <div class="form-group">
-            <label for="model-nomor_un">Nomor UN</label>
-            <input type="text" class="form-control" id="model-nomor_un" v-model="model.nomor_un" name="nomor_un" placeholder="Nomor UN" required>
-            <field-messages name="nomor_un" show="$invalid && $submitted" class="text-danger">
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="siswa_id">Nama Siswa</label>
+            <v-select name="siswa_id" v-model="model.siswa" :options="siswa" class="mb-4"></v-select>
+
+            <field-messages name="siswa_id" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Nama Siswa is a required field</small>
             </field-messages>
+            </validate>
           </div>
-        </validate>
+        </div>  
 
         <validate tag="div">
           <div class="form-group">
-            <label for="model-no_kk">Nomor KK</label>
-            <input type="text" class="form-control" id="model-no_kk" v-model="model.no_kk" name="no_kk" placeholder="Nomor KK" required>
-            <field-messages name="no_kk" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
-            </field-messages>
-          </div>
-        </validate>
-
-        <validate tag="div">
-          <div class="form-group">
-            <label for="model-no_telp">Nomor Telp</label>
-            <input type="text" class="form-control" id="model-no_telp" v-model="model.no_telp" name="no_telp" placeholder="Nomor Telp" required>
+            <label for="model-no_telp">Nomor Telepon</label>
+            <input type="text" class="form-control" id="model-no_telp" v-model="model.no_telp" name="no_telp" placeholder="Nomor Telepon" required>
             <field-messages name="no_telp" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Nomor Telepon is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -54,7 +46,7 @@
             <input type="text" class="form-control" id="model-nama_ayah" v-model="model.nama_ayah" name="nama_ayah" placeholder="Nama Ayah" required>
             <field-messages name="nama_ayah" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Nama Ayah is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -65,7 +57,7 @@
             <input type="text" class="form-control" id="model-nama_ibu" v-model="model.nama_ibu" name="nama_ibu" placeholder="Nama Ibu" required>
             <field-messages name="nama_ibu" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Nama Ibu is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -76,7 +68,7 @@
             <input type="text" class="form-control" id="model-pendidikan_ayah" v-model="model.pendidikan_ayah" name="pendidikan_ayah" placeholder="Pendidikan Ayah" required>
             <field-messages name="pendidikan_ayah" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Pendidikan Ayah is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -87,7 +79,7 @@
             <input type="text" class="form-control" id="model-kerja_ayah" v-model="model.kerja_ayah" name="kerja_ayah" placeholder="Pekerjaan Ayah" required>
             <field-messages name="kerja_ayah" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Pekerjaan Ayah is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -98,7 +90,7 @@
             <input type="text" class="form-control" id="model-pendidikan_ibu" v-model="model.pendidikan_ibu" name="pendidikan_ibu" placeholder="Pendidikan Ibu" required>
             <field-messages name="pendidikan_ibu" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Pendidikan Ibu is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -109,7 +101,7 @@
             <input type="text" class="form-control" id="model-kerja_ibu" v-model="model.kerja_ibu" name="kerja_ibu" placeholder="Pekerjaan Ibu" required>
             <field-messages name="kerja_ibu" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Pekerjaan Ibu is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -120,7 +112,7 @@
             <input type="text" class="form-control" id="model-alamat_ortu" v-model="model.alamat_ortu" name="alamat_ortu" placeholder="Alamat Orang Tua" required>
             <field-messages name="alamat_ortu" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
+              <small class="form-text text-danger" slot="required">Alamat Orang Tua is a required field</small>
             </field-messages>
           </div>
         </validate>
@@ -157,8 +149,7 @@ export default {
       .then(response => {
         if (response.data.status == true) {
           this.model.user = response.data.user;
-          this.model.nomor_un  = response.data.orang_tua.nomor_un;
-          this.model.no_kk  = response.data.orang_tua.no_kk;
+          this.model.siswa = response.data.siswa;
           this.model.no_telp  = response.data.orang_tua.no_telp;
           this.model.nama_ayah  = response.data.orang_tua.nama_ayah;
           this.model.nama_ibu  = response.data.orang_tua.nama_ibu;
@@ -178,6 +169,11 @@ export default {
 
       axios.get('api/orang-tua/create')
       .then(response => {
+
+          response.data.siswa.forEach(element => {
+            this.siswa.push(element);
+          });
+
           if(response.data.user_special == true){
             response.data.user.forEach(user_element => {
               this.user.push(user_element);
@@ -196,8 +192,7 @@ export default {
       state: {},
       model: {
         user          : "",
-        nomor_un      : "",
-        no_kk         : "",
+        siswa      : "",
         no_telp       : "",
         nama_ayah     : "",
         nama_ibu      : "",
@@ -207,7 +202,8 @@ export default {
         kerja_ibu     : "",
         alamat_ortu   : ""
       },
-      user: []
+      user: [],
+      siswa: []
     }
   },
   methods: {
@@ -219,8 +215,7 @@ export default {
       } else {
         axios.put('api/orang-tua/' + this.$route.params.id, {
             user_id : this.model.user.id,
-            nomor_un : this.model.nomor_un,
-            no_kk : this.model.no_kk,
+            siswa_id: this.model.siswa.id,
             no_telp : this.model.no_telp,
             nama_ayah : this.model.nama_ayah,
             nama_ibu : this.model.nama_ibu,
@@ -251,8 +246,6 @@ export default {
       axios.get('api/orang-tua/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.status == true) {
-          this.model.nomor_un  = response.data.orang_tua.nomor_un;
-          this.model.no_kk  = response.data.orang_tua.no_kk;
           this.model.no_telp  = response.data.orang_tua.no_telp;
           this.model.nama_ayah  = response.data.orang_tua.nama_ayah;
           this.model.nama_ibu  = response.data.orang_tua.nama_ibu;
