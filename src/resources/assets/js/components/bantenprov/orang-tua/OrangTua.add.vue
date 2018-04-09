@@ -14,22 +14,6 @@
 
     <div class="card-body">
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
-        
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
-            <label for="user_id">Username</label>
-            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
-
-            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">username is a required field</small>
-            </field-messages>
-            </validate>
-          </div>
-        </div>
-
-     
 
         <validate tag="div">
           <div class="form-group">
@@ -51,7 +35,7 @@
               <small class="form-text text-danger" slot="required">This field is a required field</small>
             </field-messages>
           </div>
-        </validate>  
+        </validate>
 
         <validate tag="div">
           <div class="form-group">
@@ -141,6 +125,20 @@
           </div>
         </validate>
 
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
+
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">username is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Submit</button>
           <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
@@ -156,12 +154,19 @@ export default {
    mounted(){
     axios.get('api/orang-tua/create')
     .then(response => {
+      this.model.user = response.data.current_user;
+
+      if(response.data.user_special == true){
         response.data.user.forEach(user_element => {
-            this.user.push(user_element);
+          this.user.push(user_element);
         });
+      }else{
+        this.user.push(response.data.user);
+      }
     })
     .catch(function(response) {
       alert('Break');
+      window.location = '#/admin/orang-tua';
     });
   },
   data() {
@@ -205,7 +210,7 @@ export default {
             alamat_ortu : this.model.alamat_ortu
           })
           .then(response => {
-            if (response.data.loaded == true) {
+            if (response.data.status == true) {
               if(response.data.message == 'success'){
                 alert(response.data.message);
                 app.back();
@@ -224,7 +229,7 @@ export default {
     reset() {
       axios.get('api/orang-tua/create')
         .then(response => {
-          if (response.data.loaded == true) {
+          if (response.data.status == true) {
             this.model.user_id  = response.data.orang_tua.user_id;
             this.model.nomor_un  = response.data.orang_tua.nomor_un;
             this.model.no_kk  = response.data.orang_tua.no_kk;

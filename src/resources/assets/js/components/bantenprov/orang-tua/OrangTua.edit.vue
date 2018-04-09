@@ -15,20 +15,6 @@
     <div class="card-body">
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
 
-         <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
-            <label for="user_id">Username</label>
-            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
-
-            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Username is a required field</small>
-            </field-messages>
-            </validate>
-          </div>
-        </div>
-
         <validate tag="div">
           <div class="form-group">
             <label for="model-nomor_un">Nomor UN</label>
@@ -141,6 +127,20 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
+
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Username is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
           <button type="submit" class="btn btn-primary">Submit</button>
           <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
         </div></div>
@@ -155,7 +155,7 @@ export default {
   mounted() {
     axios.get('api/orang-tua/' + this.$route.params.id + '/edit')
       .then(response => {
-        if (response.data.loaded == true) {
+        if (response.data.status == true) {
           this.model.user = response.data.user;
           this.model.nomor_un  = response.data.orang_tua.nomor_un;
           this.model.no_kk  = response.data.orang_tua.no_kk;
@@ -175,14 +175,20 @@ export default {
         alert('Break');
         window.location.href = '#/admin/orang-tua/';
       }),
+
       axios.get('api/orang-tua/create')
-      .then(response => {           
-          response.data.user.forEach(element => {
-            this.user.push(element);
-          });
+      .then(response => {
+          if(response.data.user_special == true){
+            response.data.user.forEach(user_element => {
+              this.user.push(user_element);
+            });
+          }else{
+            this.user.push(response.data.user);
+          }
       })
       .catch(function(response) {
         alert('Break');
+        window.location.href = '#/admin/orang-tua/';
       })
   },
   data() {
@@ -225,7 +231,7 @@ export default {
             alamat_ortu : this.model.alamat_ortu
           })
           .then(response => {
-            if (response.data.loaded == true) {
+            if (response.data.status == true) {
               if(response.data.message == 'success'){
                 alert(response.data.message);
                 app.back();
@@ -244,7 +250,7 @@ export default {
     reset() {
       axios.get('api/orang-tua/' + this.$route.params.id + '/edit')
         .then(response => {
-          if (response.data.loaded == true) {
+          if (response.data.status == true) {
           this.model.nomor_un  = response.data.orang_tua.nomor_un;
           this.model.no_kk  = response.data.orang_tua.no_kk;
           this.model.no_telp  = response.data.orang_tua.no_telp;
