@@ -169,6 +169,8 @@ class OrangTuaController extends Controller
             $orang_tua->save();
             $response['message'] = 'success';
 
+            }
+
         $response['status'] = true;
 
         return response()->json($response);
