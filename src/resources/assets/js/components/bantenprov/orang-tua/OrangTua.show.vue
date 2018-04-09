@@ -17,19 +17,13 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Nomor UN :</b> {{ model.nomor_un }}
+            <b>Nama Siswa :</b> {{ model.siswa.nama_siswa }}
           </div>
         </div>
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Nomor KK :</b> {{ model.no_kk }}
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <b>Nomor Telp :</b> {{ model.no_telp }}
+            <b>Nomor Telepon :</b> {{ model.no_telp }}
           </div>
         </div>
 
@@ -97,9 +91,8 @@ export default {
     axios.get('api/orang-tua/' + this.$route.params.id)
       .then(response => {
         if (response.data.status == true) {
-          this.model.user = response.data.orang_tua.user.name;
-          this.model.nomor_un = response.data.orang_tua.nomor_un;
-          this.model.no_kk = response.data.orang_tua.no_kk;
+          this.model.user = response.data.user;
+          this.model.siswa = response.data.siswa;
           this.model.no_telp = response.data.orang_tua.no_telp;
           this.model.nama_ayah = response.data.orang_tua.nama_ayah;
           this.model.nama_ibu = response.data.orang_tua.nama_ibu;
@@ -125,8 +118,7 @@ export default {
       state: {},
       model: {
         user: "",
-        nomor_un: "",
-        no_kk: "",
+        siswa: "",    
         no_telp: "",
         nama_ayah: "",
         nama_ibu: "",
@@ -137,65 +129,13 @@ export default {
         alamat_ortu: "",
         created_at: "",
         updated_at: ""
-
+        
       },
-      user: []
+      user: [],
+      siswa: []
     }
   },
   methods: {
-    onSubmit: function() {
-      let app = this;
-
-      if (this.state.$invalid) {
-        return;
-      } else {
-        axios.put('api/orang-tua/' + this.$route.params.id, {
-          nomor_un: this.model.nomor_un,
-          no_kk: this.model.no_kk,
-          no_telp: this.model.no_telp,
-          nama_ayah: this.model.nama_ayah,
-          nama_ibu: this.model.nama_ibu,
-          pendidikan_ayah: this.model.pendidikan_ayah,
-          kerja_ayah: this.model.kerja_ayah,
-          pendidikan_ibu: this.model.pendidikan_ibu ,
-          kerja_ibu: this.model.kerja_ibu,
-          alamat_ortu: this.model.alamat_ortu,
-          created_at: this.model.created_at,
-          updated_at: this.model.updated_at
-
-
-          })
-          .then(response => {
-            if (response.data.status == true) {
-              if(response.data.message == 'success'){
-                alert(response.data.message);
-                app.back();
-              }else{
-                alert(response.data.message);
-              }
-            } else {
-              alert(response.data.message);
-            }
-          })
-          .catch(function(response) {
-            alert('Break ' + response.data.message);
-          });
-      }
-    },
-    reset() {
-      axios.get('api/orang_tua/' + this.$route.params.id + '/edit')
-        .then(response => {
-          if (response.data.status == true) {
-            this.model.nomor_un = response.data.orang_tua.nomor_un;
-            this.model.no_kk = response.data.orang_tua.no_kk;
-          } else {
-            alert('Failed');
-          }
-        })
-        .catch(function(response) {
-          alert('Break ');
-        });
-    },
     back() {
       window.location = '#/admin/orang-tua';
     }

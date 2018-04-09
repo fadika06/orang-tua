@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\OrangTua\Models\Bantenprov\OrangTua;
+<?php 
+
+namespace Bantenprov\OrangTua\Models\Bantenprov\OrangTua;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,8 +18,7 @@ class OrangTua extends Model
     protected $table = 'orangtuas';
     
     protected $fillable = [
-        'nomor_un',
-        'no_kk',
+        'siswa_id',
         'alamat_ortu',
         'nama_ayah',
         'nama_ibu',
@@ -29,8 +30,14 @@ class OrangTua extends Model
         'user_id'
 
     ];
+    
     public function user()
     {
         return $this->belongsTo('App\User','user_id');
+    }
+
+    public function siswa()
+    {
+        return $this->belongsTo('Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa','siswa_id');
     }
 }
