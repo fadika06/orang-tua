@@ -74,7 +74,7 @@
        <div class="card-footer text-muted">
         <div class="row">
           <div class="col-md">
-            <b>Username :</b> {{ model.user }}
+            <b>Username :</b> {{ model.user.name }}
           </div>
           <div class="col-md">
             <div class="col-md text-right">Dibuat : {{ model.created_at }}</div>
