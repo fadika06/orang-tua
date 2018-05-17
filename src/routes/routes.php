@@ -11,11 +11,11 @@ Route::group(['prefix' => 'api/orang-tua', 'middleware' => ['web']], function() 
         'destroy'   => 'Bantenprov\OrangTua\Http\Controllers\OrangTuaController@destroy',
     ];
 
-    Route::get('/',             $controllers->index)->name('orang-tua.index');
-    Route::get('/create',       $controllers->create)->name('orang-tua.create');
-    Route::post('/',            $controllers->store)->name('orang-tua.store');
-    Route::get('/{id}',         $controllers->show)->name('orang-tua.show');
-    Route::get('/{id}/edit',    $controllers->edit)->name('orang-tua.edit');
-    Route::put('/{id}',         $controllers->update)->name('orang-tua.update');
-    Route::delete('/{id}',      $controllers->destroy)->name('orang-tua.destroy');
+    Route::get('/',             $controllers->index)->name('orang-tua.index')->middleware(['role:administrator|superadministrator']);
+    Route::get('/create',       $controllers->create)->name('orang-tua.create')->middleware(['role:administrator|superadministrator']);
+    Route::post('/',            $controllers->store)->name('orang-tua.store')->middleware(['role:administrator|superadministrator']);
+    Route::get('/{id}',         $controllers->show)->name('orang-tua.show')->middleware(['role:administrator|superadministrator']);
+    Route::get('/{id}/edit',    $controllers->edit)->name('orang-tua.edit')->middleware(['role:administrator|superadministrator']);
+    Route::put('/{id}',         $controllers->update)->name('orang-tua.update')->middleware(['role:administrator|superadministrator']);
+    Route::delete('/{id}',      $controllers->destroy)->name('orang-tua.destroy')->middleware(['role:superadministrator']);
 });
