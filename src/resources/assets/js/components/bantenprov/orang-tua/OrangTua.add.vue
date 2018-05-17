@@ -142,10 +142,13 @@
 </template>
 
 <script>
+import swal from 'sweetalert2';
+
 export default {
    mounted(){
     axios.get('api/orang-tua/create')
     .then(response => {
+
       this.model.user = response.data.current_user;
 
       response.data.siswa.forEach(element => {
@@ -160,9 +163,24 @@ export default {
         this.user.push(response.data.user);
       }
     })
-    .catch(function(response) {
-      alert('Break');
-      window.location = '#/admin/orang-tua';
+    .catch(function(error) {
+      var error_status = error.response.status;
+      if(error_status == 403){
+        swal(
+          'Maaf',
+          'Anda tidak mempunyai hak akses.',
+          'error'
+        );
+        window.location = '#/admin/orang-tua';
+      }else{
+        swal(
+          'Error',
+          'Something Wrong !',
+          'error'
+        );
+        window.location = '#/admin/orang-tua';
+      }
+
     });
   },
   data() {
