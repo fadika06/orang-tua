@@ -15,17 +15,16 @@ class CreateOrangTuasTable extends Migration
 	{
 		Schema::create('orangtuas', function (Blueprint $table) {
 			 $table->increments('id');
-			 $table->bigInteger('nomor_un')->unique();
-			 $table->bigInteger('no_kk')->unique();
+			 $table->string('nomor_un');
 			 $table->text('alamat_ortu');
 			 $table->string('nama_ayah');
 			 $table->string('nama_ibu');
-			 $table->text('kerja_ayah');
-			 $table->text('pendidikan_ayah');
-			 $table->text('kerja_ibu');
-			 $table->text('pendidikan_ibu');
-			 $table->integer('no_telp')->unique();
-			 $table->integer('user_id')->unique();
+			 $table->string('kerja_ayah');
+			 $table->string('pendidikan_ayah');
+			 $table->string('kerja_ibu');
+			 $table->string('pendidikan_ibu');
+			 $table->string('no_telp');
+			 $table->integer('user_id');
 			 $table->timestamps();
 			 $table->softDeletes();
 		});
